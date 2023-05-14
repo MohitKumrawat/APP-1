@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Local Excel File Data</title>
+  <script src="xlsx.full.min.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+  <script>
+    function loadExcelData() {
+      var fileURL = 'https://raw.githubusercontent.com/MohitKumrawat/hello-world/db6cc8d44c60610c46f19b622e0f3529bd87453b/excel.xlsx';
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', fileURL, true);
+      xhr.responseType = 'arraybuffer';
+
+      xhr.onload = function(e) {
+        if (xhr.status == 200) {
+          var data = new Uint8Array(xhr.response);
+          var workbook = XLSX.read(data, {type: 'array'});
+          var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+          
+          // Create the table element
+          var table = document.createElement('table');
+
+          // Create and populate the table headers
+          var headers = jsonData[0];
+          var headerRow = document.createElement('tr');
+          for (var i = 0; i < headers.length; i++) {
+            var headerCell = document.createElement('th');
+            headerCell.textContent = headers[i];
+            headerRow.appendChild(headerCell);
+          }
+          table.appendChild(headerRow);
+
+          // Populate the table with data rows
+          for (var j = 1; j < jsonData.length; j++) {
+            var dataRow = document.createElement('tr');
+            for (var k = 0; k < headers.length; k++) {
+              var dataCell = document.createElement('td');
+              dataCell.textContent = jsonData[j][k];
+              dataRow.appendChild(dataCell);
+            }
+            table.appendChild(dataRow);
+          }
+
+          // Append the table to the document body
+          document.body.appendChild(table);
+        }
+      };
+
+      xhr.send();
+    }
+  </script>
+</head>
+<body onload="loadExcelData()">
+</body>
+</html>
