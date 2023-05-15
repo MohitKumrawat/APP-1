@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Local Excel File Data</title>
+  <title>Substation Parameter Monitoring</title>
   <script src="xlsx.full.min.js"></script>
   <style>
     table {
@@ -10,9 +10,18 @@
     }
 
     th, td {
-      border: 1px solid black;
+      border: 2px dotted black;
       padding: 8px;
       text-align: left;
+    }
+    body {
+      font-size: xx-large;
+      font-family: monospace;
+      background: #d4d4d4;
+    }
+
+    tr:nth-child(2n) {
+      background-color: rgba(150, 172, 148, 0.716);
     }
   </style>
   <script>
